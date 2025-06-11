@@ -82,12 +82,19 @@ public class EmployeeManagerTest {
         try {
             employeeManager.updateEmployeeSalary(employee1, 60000);
         } catch (InvalidSalaryException e) {
+            assertTrue(true);
+            return;
+        }
+
+        try {
+            employeeManager.updateEmployeeSalary(employee1, 60000);
+        } catch (InvalidSalaryException e) {
             // Verificar que se lanza la excepción.
             assertTrue(true);
             return;
         }
         // - Verificar que se lanza una InvalidSalaryException.
-        assertFalse(true, "Expected InvalidSalaryException to be thrown");
+        fail("Expected InvalidSalaryException to be thrown");
     }
 
     @Test
@@ -102,7 +109,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una EmployeeNotFoundException.
-        assertFalse(true, "Expected EmployeeNotFoundException to be thrown");
+        fail("Expected EmployeeNotFoundException to be thrown");
     }
 
     @Test
@@ -127,7 +134,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una InvalidSalaryException porque el salario de employee1 no está dentro del rango para Senior Developer.
-        assertFalse(true, "Expected InvalidSalaryException to be thrown");
+        fail("Expected InvalidSalaryException to be thrown");
     }
 
     @Test
@@ -141,7 +148,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una EmployeeNotFoundException.
-        assertFalse(true, "Expected EmployeeNotFoundException to be thrown");;
+        fail("Expected EmployeeNotFoundException to be thrown");;
     }
 
     @Test
@@ -169,7 +176,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una InvalidSalaryException al agregar este empleado.
-        assertFalse(true, "Expected InvalidSalaryException to be thrown");
+        fail("Expected InvalidSalaryException to be thrown");
         // - Crear otro empleado con un salario de 40000 para seniorDeveloper.
         try {
             Employee invalidSenior = new Employee("4", "Invalid Senior", seniorDeveloper, 40000);
@@ -179,7 +186,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una InvalidSalaryException al agregar este empleado.
-        assertFalse(true, "Expected InvalidSalaryException to be thrown");
+        fail("Expected InvalidSalaryException to be thrown");
     }
 
     @Test
@@ -189,7 +196,7 @@ public class EmployeeManagerTest {
         try{
             employeeManager.removeEmployee(employee1);
         } catch (EmployeeNotFoundException e) {
-            assertFalse(true, "Expected no exception to be thrown");
+            fail("Expected no exception to be thrown");
             return;
         }
         // - Verificar que no se lanza ninguna excepción.
@@ -207,7 +214,7 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una EmployeeNotFoundException.
-        assertFalse(true, "Expected EmployeeNotFoundException to be thrown");
+        fail("Expected EmployeeNotFoundException to be thrown");
     }
 
     @Test
@@ -221,6 +228,50 @@ public class EmployeeManagerTest {
             return;
         }
         // - Verificar que se lanza una DuplicateEmployeeException.
-        assertFalse(true, "Expected DuplicateEmployeeException to be thrown");
+        fail("Expected DuplicateEmployeeException to be thrown");
+    }
+    @Test
+     public void testAddEmployeesWithSameNameFail(){
+        // TODO: Intentar agregar empleados con el mismo nombre y verificar la excepción.
+        // - Crear un nuevo empleado con el mismo nombre que employee1 pero diferente ID.
+        Employee duplicateNameEmployee = new Employee("3", "John Doe", juniorDeveloper, 45000);
+        try {
+            employeeManager.addEmployee(duplicateNameEmployee);
+        } catch (DuplicateEmployeeException e) {
+            assertTrue(true);
+            return;
+        }
+        // - Verificar que se lanza una DuplicateEmployeeException.
+        fail("Expected DuplicateEmployeeException to be thrown");
+    }
+
+    @Test
+    public void testAddNullPositionEmployeeFail(){
+        // TODO: Intentar agregar un empleado con posición nula y verificar la excepción.
+        // - Crear un nuevo empleado con posición nula.
+        try{
+            Employee nullPositionEmployee = new Employee("4", "Null Position", null, 40000);
+            employeeManager.addEmployee(nullPositionEmployee);
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+            return;
+        }
+        // - Verificar que se lanza una IllegalArgumentException.
+        fail("Expected IllegalArgumentException to be thrown");
+    }
+
+    @Test
+    public void testAddNegativeSalaryEmployeeFail(){
+        // TODO: Intentar agregar un empleado con salario negativo y verificar la excepción.
+        // - Crear un nuevo empleado con un salario negativo.
+        try {
+            Employee negativeSalaryEmployee = new Employee("5", "Negative Salary", juniorDeveloper, -1000);
+            employeeManager.addEmployee(negativeSalaryEmployee);
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+            return;
+        }
+        // - Verificar que se lanza una IllegalArgumentException.
+        fail("Expected IllegalArgumentException to be thrown");
     }
 }

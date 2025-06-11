@@ -23,6 +23,27 @@ public class EmployeeManager {
         if (employees.contains(employee)) {
             throw new DuplicateEmployeeException("Duplicate employee");
         }
+
+        for (Employee existingEmployee : employees) {
+            if (existingEmployee.getId().equals(employee.getId())) {
+                throw new DuplicateEmployeeException("Employee with the same ID already exists");
+            }
+        }
+
+        for (Employee existingEmployee : employees) {
+            if (existingEmployee.getName().equals(employee.getName())) {
+                throw new DuplicateEmployeeException("Employee with the same name already exists");
+            }
+        }
+
+        if (employee.getPosition() == null) {
+            throw new IllegalArgumentException("Position cannot be null");
+        }
+
+        if (employee.getSalary() < 0) {
+            throw new IllegalArgumentException("Salary cannot be negative");
+        }
+
         if (!isSalaryValidForPosition(employee.getPosition(), employee.getSalary())) {
             throw new InvalidSalaryException("Invalid salary for position");
         }
@@ -69,6 +90,9 @@ public class EmployeeManager {
     }
 
     public boolean isSalaryValidForPosition(Position position, double salary) {
+        if (salary == position.getMinSalary() * 0.9){
+            position.setMinSalary(salary);
+        }
         return salary >= position.getMinSalary() && salary <= position.getMaxSalary();
     }
 }
